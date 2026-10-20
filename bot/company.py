@@ -295,7 +295,7 @@ async def show_task_list(query, status: str, page: int) -> None:
     from telegram import InlineKeyboardButton, InlineKeyboardMarkup
     rows = [[InlineKeyboardButton(t["title"], callback_data=f"co:task:view:{t['id']}")] for t in chunk]
     nav = kb.task_list_nav(status, page, end < len(tasks))
-    rows = rows + nav.inline_keyboard
+    rows = rows + [list(row) for row in nav.inline_keyboard]
     await query.edit_message_text(f"{title}:", reply_markup=InlineKeyboardMarkup(rows))
 
 
@@ -456,7 +456,7 @@ async def show_vote_list(query, page: int) -> None:
     from telegram import InlineKeyboardButton, InlineKeyboardMarkup
     rows = [[InlineKeyboardButton(v["title"], callback_data=f"co:vote:view:{v['id']}")] for v in chunk]
     nav = kb.vote_list_nav(page, end < len(votes))
-    rows = rows + nav.inline_keyboard
+    rows = rows + [list(row) for row in nav.inline_keyboard]
     await query.edit_message_text("📋 Активные голосования:", reply_markup=InlineKeyboardMarkup(rows))
 
 
